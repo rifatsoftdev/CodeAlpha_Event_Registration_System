@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f6f8fc"><title>Dashboard — EventHub</title><link rel="stylesheet" href="/static/styles.css"><script src="/static/dashboard.js" defer></script></head>
+<body class="dashboard-page">
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">E</span> EventHub</a><nav class="top-actions" aria-label="Account"><a class="button button-quiet" href="/">Explore events</a><button id="signout-button" class="button button-outline" type="button">Sign out</button></nav></header>
+  <main class="dashboard-main">
+    <section class="dashboard-heading"><div><span class="eyebrow"><span class="eyebrow-dot"></span> YOUR EVENT SPACE</span><h1>Welcome back, <span id="dashboard-username">friend</span></h1><p class="dashboard-subtitle" id="dashboard-subtitle">Your events and registrations, all in one place.</p></div><div class="dashboard-stats" id="dashboard-stats"><div class="stat-card"><span class="stat-icon">▦</span><strong id="stat-primary">0</strong><span id="stat-primary-label">Registrations</span></div><div class="stat-card"><span class="stat-icon stat-icon-lilac">✓</span><strong id="stat-secondary">0</strong><span id="stat-secondary-label">Upcoming</span></div></div></section>
+    <div id="dashboard-message" class="notice" role="status" aria-live="polite" hidden></div>
+    <section id="organizer-section" class="dashboard-section" hidden><div class="dashboard-section-heading"><div><span class="eyebrow"><span class="eyebrow-dot"></span> ORGANIZER TOOLS</span><h2>Your events</h2></div><button id="new-event-button" class="button button-primary" type="button"><span aria-hidden="true">+</span> Create event</button></div><div id="organizer-events" class="dashboard-list"></div><div id="attendees-panel" class="attendees-panel" hidden></div></section>
+    <section id="registrations-section" class="dashboard-section"><div class="dashboard-section-heading"><div><span class="eyebrow"><span class="eyebrow-dot"></span> YOUR PLANS</span><h2>My registrations</h2></div><a class="text-link" href="/#events">Browse events <span aria-hidden="true">↗</span></a></div><div id="registrations-list" class="dashboard-list"></div></section>
+  </main>
+  <footer class="footer"><a class="brand footer-brand" href="/"><span class="brand-mark">E</span> EventHub</a><span>Made for getting together.</span><a href="/docs">API documentation ↗</a></footer>
+
+  <dialog id="event-dialog" class="dialog"><form id="event-form" class="dialog-card"><button class="dialog-close" type="button" data-close aria-label="Close">×</button><span class="eyebrow"><span class="eyebrow-dot"></span> <span id="event-form-label">EVENT DETAILS</span></span><h2 id="event-form-title">Create an event</h2>
+    <label for="event-title">Event name</label><input id="event-title" name="title" maxlength="200" required>
+    <label for="event-description">Description</label><textarea id="event-description" name="description" rows="3" maxlength="5000"></textarea>
+    <label for="event-location">Location</label><input id="event-location" name="location" maxlength="255" required>
+    <div class="form-row"><div><label for="event-start">Starts</label><input id="event-start" name="start_time" type="datetime-local" required></div><div><label for="event-end">Ends</label><input id="event-end" name="end_time" type="datetime-local" required></div></div>
+    <label for="event-capacity">Capacity</label><input id="event-capacity" name="capacity" type="number" min="1" max="100000" required>
+    <p id="event-error" class="form-error" role="alert" hidden></p><button id="event-form-submit" class="button button-primary dialog-submit" type="submit">Publish event <span aria-hidden="true">→</span></button>
+  </form></dialog>
+</body></html>

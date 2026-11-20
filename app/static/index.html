@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fc">
+  <title>EventHub — Discover events</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="EventHub home"><span class="brand-mark">E</span> EventHub</a>
+    <nav class="top-actions" aria-label="Account">
+      <span id="user-label" class="user-label" hidden></span>
+      <a id="dashboard-link" class="button button-quiet" href="/dashboard" hidden>Dashboard</a>
+      <a id="auth-button" class="button button-primary" href="/login">Sign in</a>
+      <button id="signout-button" class="button button-quiet" type="button" hidden>Sign out</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> FIND YOUR NEXT EXPERIENCE</span>
+        <h1>Make time for<br><span>something good.</span></h1>
+        <p class="hero-description">Discover local events, meet people who share your interests, and save a seat for what’s next.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#events">Explore events <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="/register">Create an account <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-proof"><span class="proof-icon">✓</span> Free to join <span class="proof-divider">·</span> Easy to manage</div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="visual-shape shape-one"></div><div class="visual-shape shape-two"></div>
+        <div class="visual-card visual-card-main"><span class="visual-label">UP NEXT</span><div class="visual-date"><strong>24</strong><span>JUN</span></div><div><strong>Ideas in bloom</strong><small>Creative workshop · Dhaka</small></div><span class="visual-arrow">↗</span></div>
+        <div class="visual-card visual-card-note"><span class="note-icon">✦</span><span>Good things<br>happen here.</span></div>
+        <span class="visual-spark spark-a">✳</span><span class="visual-spark spark-b">✦</span>
+      </div>
+      <div class="hero-bottom"><span>01</span><span>LOCAL EVENTS · REAL CONNECTIONS</span><span>SCROLL TO EXPLORE ↓</span></div>
+    </section>
+
+    <section id="events" class="events-section">
+      <div class="section-heading">
+        <div><span class="eyebrow"><span class="eyebrow-dot"></span> THE COMMUNITY CALENDAR</span><h2>Upcoming events<span class="heading-dot">.</span></h2></div>
+        <p class="section-note">Find a plan worth<br>leaving home for.</p>
+      </div>
+      <div class="event-toolbar"><label class="search-box"><span aria-hidden="true">⌕</span><input id="event-search" type="search" placeholder="Search events or places" aria-label="Search events or places"></label><span id="event-count" class="event-count"></span></div>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div id="event-list" class="event-grid" aria-live="polite"><p class="loading-message">Loading events…</p></div>
+    </section>
+    <section class="bottom-callout"><div class="callout-icon">✦</div><div><h2>Have something to share?</h2><p>Bring people together. Create an event for your community.</p></div><a class="button button-light" href="/dashboard">Host an event <span aria-hidden="true">↗</span></a></section>
+  </main>
+  <footer class="footer"><a class="brand footer-brand" href="/"><span class="brand-mark">E</span> EventHub</a><span>Made for getting together.</span><a href="/docs">API documentation ↗</a></footer>
+
+  <dialog id="register-dialog" class="dialog">
+    <form id="register-form" class="dialog-card">
+      <button class="dialog-close" type="button" data-close aria-label="Close">×</button>
+      <span class="eyebrow"><span class="eyebrow-dot"></span> RESERVE YOUR PLACE</span>
+      <h2 id="register-title">Join this event</h2>
+      <p class="dialog-intro">Add your details to confirm your registration.</p>
+      <label for="full-name">Full name</label><input id="full-name" name="full_name" autocomplete="name" maxlength="150" required>
+      <label for="phone">Phone <span class="optional">· optional</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="30">
+      <label for="notes">Note to organizer <span class="optional">· optional</span></label><textarea id="notes" name="notes" rows="3" maxlength="2000"></textarea>
+      <p id="register-error" class="form-error" role="alert" hidden></p>
+      <button class="button button-primary dialog-submit" type="submit">Confirm registration <span aria-hidden="true">→</span></button>
+    </form>
+  </dialog>
+</body>
+</html>
