@@ -37,6 +37,7 @@ def _with_spots(db: Session, events: List[Event]) -> List[Event]:
 
 def _get_event_or_404(db: Session, event_id: int) -> Event:
     event = db.get(Event, event_id)
+
     if not event:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND,
@@ -158,6 +159,7 @@ def update_event(
     event = _owned_event(db, event_id, user)
 
     updates = data.model_dump(exclude_unset=True)
+
     if "capacity" in updates:
         confirmed = db.scalar(
             select(func.count()).select_from(Registration).where(
@@ -167,7 +169,7 @@ def update_event(
         )
         if updates["capacity"] < confirmed:
             raise HTTPException(
-                status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status.HTTP_422_UNPROCESSABLE_CONTENT,
                 f"capacity cannot be less than the {confirmed} confirmed registrations",
             )
 
@@ -176,7 +178,7 @@ def update_event(
 
     if event.end_time <= event.start_time:
         raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
             "end_time must be after start_time"
         )
     

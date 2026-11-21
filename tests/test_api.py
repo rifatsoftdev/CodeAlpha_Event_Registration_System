@@ -30,6 +30,7 @@ def client():
     with Session() as db:
         db.add(User(username="org", hashed_password=hash_password("password1"), is_organizer=True))
         db.commit()
+
     yield TestClient(app)
 
     app.dependency_overrides.clear()
@@ -41,6 +42,7 @@ def auth(client, username, password="password1", signup=True):
             "username": username, "email": f"{username}@example.test", "password": password,
         }).status_code == 201
     r = client.post("/auth/login", data={"username": username, "password": password})
+
     assert r.status_code == 200
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
@@ -50,6 +52,7 @@ def make_event(client, headers, capacity=1, days=1):
     r = client.post("/events", headers=headers, json={
         "title": "Meetup", "location": "Dhaka", "capacity": capacity,
         "start_time": start.isoformat(), "end_time": (start + timedelta(hours=2)).isoformat()})
+    
     assert r.status_code == 201, r.text
     return r.json()
 

@@ -85,3 +85,6 @@ class Registration(Base):
     @property
     def event_start_time(self) -> datetime:
         return self.event.start_time
+
+
+

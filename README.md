@@ -2,34 +2,44 @@
 
 Python 3.10+ · FastAPI · SQLAlchemy 2.0 · JWT auth
 
-## Setup
-```bash
-python3.10 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-Open **http://localhost:8000** for the event listing, **http://localhost:8000/login** to sign in, or **http://localhost:8000/register** to create an account. Attendees can register for events and manage their registrations from **http://localhost:8000/dashboard**. Organizer accounts can also publish and manage their own events and view their attendee lists.
+## Docker setup
 
-The site includes event search, registration cancellation, organizer event create/edit/delete, event and attendee status, and password reset. Password reset emails need SMTP configuration. Copy `.env.example` to `.env`, set the mail credentials and `APP_BASE_URL`, then load it before starting the app:
+Install Docker, then create your local environment file and set a strong secret key. For example, generate one with Python:
 ```bash
 cp .env.example .env
-set -a && source .env && set +a
-python3.10 run.py
+python3 -c 'import secrets; print(secrets.token_urlsafe(48))'
 ```
-`run.py` does not load `.env` automatically; configure your deployment environment in the same way.
 
-Create or promote an organizer account from the project directory:
+Put the generated value in `.env` as `SECRET_KEY=...`. Set `APP_BASE_URL=http://localhost:3000`. For password recovery, also fill in the SMTP settings in `.env`.
+
+Build and start the container:
 ```bash
-python create_organizer.py organizer_name 'use-a-long-password' organizer@example.com
-python create_organizer.py --promote existing_username
+docker build -t eventhub .
+docker volume create eventhub-data
+docker run -d --name eventhub --restart unless-stopped \
+  --env-file .env \
+  -e DATABASE_URL=sqlite:////data/events.db \
+  -p 3000:3000 \
+  -v eventhub-data:/data \
+  eventhub
 ```
 
-API docs are at **http://localhost:8000/docs**; the health endpoint is **http://localhost:8000/health**.
+Open **http://localhost:3000** for the event list, **http://localhost:3000/login** to sign in, or **http://localhost:3000/register** to create an account. Attendees can register for events and manage their registrations from **http://localhost:3000/dashboard**. Organizer accounts can publish and manage events and view attendee lists.
+
+View logs with `docker logs -f eventhub`. Stop the app with `docker stop eventhub`; start it again with `docker start eventhub`. The named volume keeps the SQLite database when the container is replaced.
+
+The site includes event search, registration cancellation, organizer event create/edit/delete, event and attendee status, and password reset. Password reset emails need SMTP configuration in `.env`.
+
+Create or promote an organizer account interactively from the project directory:
+```bash
+docker exec -it eventhub python create_organizer.py
+```
+The script asks for the username, email, and password without displaying the password as you type. If that username already belongs to an attendee, it asks before promoting the account.
+
+API docs are at **http://localhost:3000/docs**; the health endpoint is **http://localhost:3000/health**.
 
 SQLite is the default. For PostgreSQL: `export DATABASE_URL=postgresql+psycopg2://user:pass@localhost:5432/events`
 (and install `psycopg2-binary`). Set a unique, random `SECRET_KEY` and `DATABASE_URL` in production. Tables are created on startup; use database migrations for schema changes after deployment.
-
-Run tests: `pytest -q`
 
 ## Endpoints
 | Method | Path | Auth | Description |

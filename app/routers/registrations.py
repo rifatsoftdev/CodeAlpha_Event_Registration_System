@@ -26,8 +26,11 @@ def _mine_or_404(db: Session, reg_id: int, user: User) -> Registration:
 
 
 @router.get("/me", response_model=List[RegistrationOut])
-def my_registrations(status_filter: Optional[str] = None, user: User = Depends(get_current_user),
-                     db: Session = Depends(get_db)):
+def my_registrations(
+    status_filter: Optional[str] = None,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     q = select(Registration).where(Registration.user_id == user.id).order_by(Registration.created_at.desc())
     
     if status_filter:
@@ -56,3 +59,4 @@ def cancel_registration(reg_id: int, user: User = Depends(get_current_user), db:
     db.commit()
 
     return reg
+

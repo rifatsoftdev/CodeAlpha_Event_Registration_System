@@ -23,6 +23,7 @@ class SignupIn(BaseModel):
         value = value.strip()
         if not value:
             raise ValueError("must not be blank")
+        
         return value
 
     @field_validator("email", mode="before")
@@ -71,6 +72,7 @@ class EventBase(BaseModel):
     def _order(self):
         if self.end_time <= self.start_time:
             raise ValueError("end_time must be after start_time")
+        
         return self
 
 
@@ -79,6 +81,7 @@ class EventCreate(EventBase):
     def _start_in_future(self):
         if self.start_time <= datetime.now(timezone.utc).replace(tzinfo=None):
             raise ValueError("start_time must be in the future")
+        
         return self
 
 
@@ -100,6 +103,7 @@ class EventUpdate(BaseModel):
         for field_name in self.model_fields_set:
             if getattr(self, field_name) is None:
                 raise ValueError(f"{field_name} cannot be null")
+            
         return self
 
 
@@ -123,6 +127,7 @@ class RegistrationForm(BaseModel):
         value = value.strip()
         if not value:
             raise ValueError("must not be blank")
+        
         return value
 
     @field_validator("phone", "notes")
